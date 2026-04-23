@@ -1,0 +1,208 @@
+@import url("https://api.fontshare.com/v2/css?f[]=cabinet-grotesk@800,700,500,400&display=swap");
+@import "@fontsource/outfit/400.css";
+@import "@fontsource/outfit/500.css";
+@import "@fontsource/outfit/600.css";
+@import "@fontsource/outfit/700.css";
+@import "@fontsource/jetbrains-mono/400.css";
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+    --rp-bg: #ffffff;
+    --rp-bg-2: #f4f5f7;
+    --rp-ink: #0d0d12;
+    --rp-ink-2: #4a4d57;
+    --rp-orange: #ff4400;
+    --rp-orange-hover: #e63d00;
+    --rp-border: #e5e7eb;
+    --rp-border-strong: #0d0d12;
+    --rp-success: #00a859;
+    --rp-warning: #ffb300;
+    --rp-danger: #ef4444;
+}
+
+[data-theme="dark"] {
+    --rp-bg: #0d0d12;
+    --rp-bg-2: #1a1a22;
+    --rp-ink: #f4f5f7;
+    --rp-ink-2: #9ca3af;
+    --rp-border: #2a2a35;
+    --rp-border-strong: #f4f5f7;
+}
+
+[data-theme="dark"] body {
+    background: var(--rp-bg);
+    color: var(--rp-ink);
+}
+
+[data-theme="dark"] .bg-white { background: var(--rp-bg-2) !important; }
+[data-theme="dark"] .bg-\[\#F4F5F7\] { background: #14141c !important; }
+[data-theme="dark"] .border-\[\#E5E7EB\] { border-color: var(--rp-border) !important; }
+[data-theme="dark"] .border-\[\#0D0D12\] { border-color: var(--rp-border-strong) !important; }
+[data-theme="dark"] .text-\[\#0D0D12\] { color: var(--rp-ink) !important; }
+[data-theme="dark"] .text-\[\#4A4D57\] { color: var(--rp-ink-2) !important; }
+[data-theme="dark"] .rp-card { background: var(--rp-bg-2); border-color: var(--rp-border); }
+[data-theme="dark"] .rp-input { background: var(--rp-bg-2); color: var(--rp-ink); border-color: var(--rp-border); }
+[data-theme="dark"] .rp-chip { background: var(--rp-bg-2); color: var(--rp-ink-2); border-color: var(--rp-border); }
+[data-theme="dark"] header { background: var(--rp-bg-2) !important; }
+[data-theme="dark"] [data-testid="resume-preview"] { /* Keep resume content on white for printability */ }
+
+body {
+    margin: 0;
+    font-family: "Outfit", -apple-system, system-ui, sans-serif;
+    color: var(--rp-ink);
+    background: var(--rp-bg);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+h1, h2, h3, h4, h5, h6, .font-display {
+    font-family: "Cabinet Grotesk", "Outfit", sans-serif;
+    letter-spacing: -0.02em;
+    line-height: 1;
+}
+
+.font-mono, code, pre {
+    font-family: "JetBrains Mono", monospace;
+}
+
+@layer base {
+    :root {
+        --background: 0 0% 100%;
+        --foreground: 240 9% 6%;
+        --card: 0 0% 100%;
+        --card-foreground: 240 9% 6%;
+        --popover: 0 0% 100%;
+        --popover-foreground: 240 9% 6%;
+        --primary: 240 9% 6%;
+        --primary-foreground: 0 0% 100%;
+        --secondary: 220 14% 96%;
+        --secondary-foreground: 240 9% 6%;
+        --muted: 220 14% 96%;
+        --muted-foreground: 224 7% 32%;
+        --accent: 14 100% 50%;
+        --accent-foreground: 0 0% 100%;
+        --destructive: 0 84% 60%;
+        --destructive-foreground: 0 0% 100%;
+        --border: 220 13% 91%;
+        --input: 220 13% 91%;
+        --ring: 240 9% 6%;
+        --radius: 0.25rem;
+    }
+}
+
+@layer base {
+    * { @apply border-border; }
+    body { @apply bg-background text-foreground; }
+}
+
+/* ─── Custom brand helpers ─────────────────────────── */
+.rp-btn-primary {
+    @apply inline-flex items-center justify-center gap-2 px-5 py-3 font-semibold text-sm tracking-wide text-white transition-all duration-150;
+    background: var(--rp-ink);
+    border-radius: 4px;
+    border: 1px solid var(--rp-ink);
+}
+.rp-btn-primary:hover {
+    background: var(--rp-orange);
+    border-color: var(--rp-orange);
+    transform: translateY(-1px);
+}
+.rp-btn-orange {
+    @apply inline-flex items-center justify-center gap-2 px-5 py-3 font-semibold text-sm tracking-wide text-white transition-all duration-150;
+    background: var(--rp-orange);
+    border-radius: 4px;
+    border: 1px solid var(--rp-orange);
+}
+.rp-btn-orange:hover {
+    background: var(--rp-orange-hover);
+    transform: translateY(-1px);
+}
+.rp-btn-outline {
+    @apply inline-flex items-center justify-center gap-2 px-5 py-3 font-semibold text-sm tracking-wide transition-all duration-150;
+    background: transparent;
+    color: var(--rp-ink);
+    border-radius: 4px;
+    border: 1px solid var(--rp-ink);
+}
+.rp-btn-outline:hover {
+    background: var(--rp-ink);
+    color: white;
+}
+
+.rp-card {
+    background: white;
+    border: 1px solid var(--rp-border);
+    border-radius: 4px;
+    transition: border-color 0.15s;
+}
+.rp-card:hover { border-color: var(--rp-ink); }
+
+.rp-overline {
+    @apply uppercase font-semibold text-xs;
+    letter-spacing: 0.2em;
+    color: var(--rp-ink-2);
+}
+
+.rp-input {
+    @apply w-full px-3 py-2.5 text-sm transition-colors;
+    background: white;
+    border: 1px solid var(--rp-border);
+    border-radius: 4px;
+    color: var(--rp-ink);
+    font-family: "Outfit", sans-serif;
+}
+.rp-input:focus {
+    outline: none;
+    border-color: var(--rp-ink);
+}
+
+.rp-chip {
+    @apply inline-flex items-center gap-1 px-2 py-0.5 text-xs font-medium uppercase tracking-wider;
+    background: var(--rp-bg-2);
+    border: 1px solid var(--rp-border);
+    border-radius: 2px;
+    color: var(--rp-ink-2);
+}
+.rp-chip-orange {
+    background: var(--rp-orange);
+    color: white;
+    border-color: var(--rp-orange);
+}
+.rp-chip-ink {
+    background: var(--rp-ink);
+    color: white;
+    border-color: var(--rp-ink);
+}
+.rp-chip-success {
+    background: #dcfce7;
+    color: #14532d;
+    border-color: #86efac;
+}
+
+/* Grid lines bg */
+.rp-grid-bg {
+    background-image:
+        linear-gradient(to right, var(--rp-border) 1px, transparent 1px),
+        linear-gradient(to bottom, var(--rp-border) 1px, transparent 1px);
+    background-size: 48px 48px;
+}
+
+/* Snap reveal animations */
+@keyframes rp-rise {
+    from { opacity: 0; transform: translateY(8px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+.rp-rise { animation: rp-rise 0.4s ease-out both; }
+.rp-rise-1 { animation-delay: 0.05s; }
+.rp-rise-2 { animation-delay: 0.1s; }
+.rp-rise-3 { animation-delay: 0.15s; }
+.rp-rise-4 { animation-delay: 0.2s; }
+
+/* scrollbar */
+::-webkit-scrollbar { width: 8px; height: 8px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: var(--rp-border); border-radius: 2px; }
+::-webkit-scrollbar-thumb:hover { background: var(--rp-ink-2); }

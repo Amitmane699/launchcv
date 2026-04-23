@@ -1,0 +1,137 @@
+{
+  "theme_and_archetype": {
+    "theme": "LIGHT",
+    "archetype": "Archetype 4: Swiss & High-Contrast",
+    "reasoning": "Fits the authority and clarity needed for an ATS and job board, ensuring high legibility for text-dense resumes. Indian neo-brutalism/fintech style (Razorpay/CRED-esque but distinctly sharper) gives it a highly trustworthy and 'fast' feel without feeling childish."
+  },
+  "colors": {
+    "backgrounds": {
+      "primary": "#FFFFFF",
+      "secondary": "#F4F5F7",
+      "tertiary": "#0D0D12"
+    },
+    "text": {
+      "primary": "#0D0D12",
+      "secondary": "#4A4D57",
+      "inverse": "#FFFFFF",
+      "accent": "#FF4400"
+    },
+    "accents": {
+      "primary": "#FF4400",
+      "primary_hover": "#E63D00",
+      "success": "#00A859",
+      "warning": "#FFB300",
+      "danger": "#EF4444",
+      "border": "#E5E7EB",
+      "border_strong": "#0D0D12"
+    },
+    "rules": [
+      "NO generic purple/violet gradients. NO muddy gradients.",
+      "Strict high-contrast: Dark text on light backgrounds or white text on dark #0D0D12.",
+      "Tint neutral greys slightly with cool blue for a crisp corporate feel.",
+      "Avoid 'SaaS Blue' - use stark black, white, and signal orange."
+    ]
+  },
+  "typography": {
+    "fonts": {
+      "headings": "Cabinet Grotesk",
+      "body": "Outfit",
+      "mono": "JetBrains Mono"
+    },
+    "rules": [
+      "Never use Inter, Roboto, or Space Grotesk.",
+      "Headings: tracking-tight, leading-none. Use 'Cabinet Grotesk' for high-impact punch.",
+      "Body: 'Outfit' for maximum legibility in resumes and job descriptions.",
+      "Overlines/Labels: Uppercase, tracking-[0.2em], tiny font.",
+      "H1 max size is text-5xl to text-6xl. Do not use 8xl."
+    ]
+  },
+  "layout_and_spacing": {
+    "spacing_scale": "Generous paddings (p-6, p-8, p-12) for containers.",
+    "border_radius": "max 4px (rounded-sm) for a sharp, technical, and fast feel. No overly bubbly borders.",
+    "grids": "Use 'Control Room' grid (tight gap-4) for dashboards. Use 'Tetris' grid (wide gap-8) for marketing sections.",
+    "rules": [
+      "Containers with borders MUST have generous internal padding.",
+      "Do not center-everything. Use asymmetrical alignments.",
+      "Align text left for dense job descriptions and resume text.",
+      "Mobile-first grids."
+    ]
+  },
+  "visual_enhancers": {
+    "shadows": "Soft minimal shadows (shadow-sm) combined with crisp 1px borders for dashboards. No heavy neumorphism.",
+    "borders": "1px solid #0D0D12 or #E5E7EB. Expose the grid skeleton in dashboard views (border-collapse look).",
+    "animations": "Snappy, fast micro-interactions. Fast page loads (<2s perception). Avoid slow fades.",
+    "icons": "Phosphor Icons (@phosphor-icons/react) for sharp, technical dashboard needs."
+  },
+  "components_strategy": {
+    "marketing": "Custom HTML + Tailwind. Break the standard grid.",
+    "app_dashboard": "Shadcn UI heavily customized. Cardless where possible; use 1px borders instead of floating floating-island cards.",
+    "charts": "Chart.js as requested. Keep colors high contrast (Black, Orange, Green).",
+    "testing": "All interactive elements MUST have data-testid attributes (e.g., data-testid='apply-job-button', data-testid='kanban-column-applied')."
+  },
+  "features_and_pages": {
+    "landing_page": {
+      "hero": "H1 'Build ATS Resume. Find Jobs. Get Hired. All in One Place.' Solid white bg, striking orange CTA. overlapping geometric UI elements.",
+      "trust_bar": "Includes 'PayUmoney secured · No hidden charges · Used by 200+ colleges · Cancel anytime'. Display college logos.",
+      "pricing": "4 jobseeker plans (Free, Resume Pro ₹149/mo, Job Seeker Pro ₹249/mo, Combo Pro ₹299/mo), 3 employer plans. Tiered cards. Month/Year toggle."
+    },
+    "builder": {
+      "layout": "Split-screen layout. Left: Forms (Shadcn customized). Right: Live A4 preview of resume.",
+      "features": "Drag-drop reordering, ATS gauge, Keyword match panel, 5 template picker visible, Export PDF button."
+    },
+    "job_board": {
+      "layout": "Left sidebar for filters. Right grid for job cards. Badges for 'Featured'.",
+      "apply": "Modal with resume selector."
+    },
+    "kanban_tracker": {
+      "columns": ["Wishlist", "Applied", "Interview", "Offer", "Rejected"],
+      "interaction": "Draggable cards with deadlines."
+    },
+    "dashboards": {
+      "employer": "Job listings table, applicant management Kanban, analytics.",
+      "admin": "Overview charts (revenue/signups via Chart.js), tables for users/resumes/jobs, payment history, setting editors, activity logs."
+    },
+    "header": {
+      "features": "Hinglish toggle button prominently displayed, User/Role selection."
+    }
+  },
+  "media_urls": [
+    {
+      "category": "hero_background",
+      "description": "Abstract white geometric architecture for the hero section background to convey structure and building.",
+      "url": "https://images.unsplash.com/photo-1561518065-a76ab6e7ab50?crop=entropy&cs=srgb&fm=jpg&ixid=M3w4NjA0MTJ8MHwxfHNlYXJjaHwyfHxhYnN0cmFjdCUyMGdlb21ldHJpYyUyMGFyY2hpdGVjdHVyZSUyMG1pbmltYWwlMjB3aGl0ZXxlbnwwfHx8fDE3NzY2Mjk5NDF8MA&ixlib=rb-4.1.0&q=85"
+    },
+    {
+      "category": "testimonial_portrait",
+      "description": "Indian professional man in office.",
+      "url": "https://images.unsplash.com/photo-1737574821698-862e77f044c1?crop=entropy&cs=srgb&fm=jpg&ixid=M3w3NTY2Nzd8MHwxfHNlYXJjaHwxfHxpbmRpYW4lMjBwcm9mZXNzaW9uYWwlMjBvZmZpY2UlMjBwb3J0cmFpdHxlbnwwfHx8fDE3NzY2Mjk5MzJ8MA&ixlib=rb-4.1.0&q=85"
+    },
+    {
+      "category": "testimonial_portrait",
+      "description": "Indian professional woman.",
+      "url": "https://images.pexels.com/photos/7580822/pexels-photo-7580822.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940"
+    },
+    {
+      "category": "sponsor_logo",
+      "description": "College/University crest logo.",
+      "url": "https://images.unsplash.com/photo-1719067691913-d390fbb06cf9?crop=entropy&cs=srgb&fm=jpg&ixid=M3w4NjAzMzJ8MHwxfHNlYXJjaHw0fHx1bml2ZXJzaXR5JTIwbG9nbyUyMGVtYmxlbXxlbnwwfHx8fDE3NzY2Mjk5NDF8MA&ixlib=rb-4.1.0&q=85"
+    },
+    {
+      "category": "sponsor_logo",
+      "description": "University emblem.",
+      "url": "https://images.pexels.com/photos/18257698/pexels-photo-18257698.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940"
+    }
+  ],
+  "instructions_to_main_agent": [
+    "Read this JSON carefully. Use ONLY the media URLs provided here. NO Placeholders.",
+    "Use standard Tailwind CSS classes. Do NOT invent new classes.",
+    "Implement all designs using Javascript (.js/.jsx) NOT TypeScript (.tsx) based on system hints.",
+    "Install and use Phosphor icons: yarn add @phosphor-icons/react",
+    "Install fonts via Fontsource: yarn add @fontsource/cabinet-grotesk @fontsource/outfit",
+    "Ensure Chart.js is integrated exactly as requested (yarn add chart.js react-chartjs-2).",
+    "Ensure ALL interactive elements and major UI sections have data-testid attributes for testing.",
+    "Ensure Shadcn UI components are stripped of their default soft borders and match this sharp 4px radius high-contrast aesthetic.",
+    "Implement the Hinglish toggle in the header.",
+    "For the Kanban application tracker, prioritize standard HTML5 drag-and-drop or a simple library like dnd-kit or react-beautiful-dnd."
+  ]
+}

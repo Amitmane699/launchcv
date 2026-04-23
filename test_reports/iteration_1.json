@@ -1,0 +1,59 @@
+{
+  "summary": "Backend-only testing for ResumePro ATS. 36 pytest tests covering auth, resumes CRUD, ATS scoring, jobs (public + employer), job applications w/ plan guard, Kanban tracker, mock PayUmoney payments, and all admin endpoints. Found and fixed 1 critical MongoDB index bug. All 36 tests pass (100%).",
+  "backend_issues": {
+    "critical": [
+      {
+        "endpoint": "POST /api/resumes (and any resume insert)",
+        "issue": "FIXED by testing agent. `resumes.share_token` had a unique+sparse index, but new resumes are inserted with `share_token: null`. `sparse` only skips MISSING fields, not null values, so creating any 2nd resume across the system raised DuplicateKeyError (500). Replaced with a partialFilterExpression index ({share_token: {$type: 'string'}}) and added a safe drop of the legacy `share_token_1` index on startup.",
+        "priority": "CRITICAL"
+      }
+    ],
+    "minor": [
+      {
+        "endpoint": "POST /api/employer/jobs",
+        "issue": "New jobs are created with is_active=false and only become active after mock job_post payment or admin verify. This is by design but may confuse employers; consider clearer API response message."
+      },
+      {
+        "endpoint": "GET /api/admin/users/{id}",
+        "issue": "Response spreads raw user doc then adds counts; no explicit exclusion of sensitive fields beyond password_hash (already excluded). OK but tighten projection for future PII fields."
+      },
+      {
+        "endpoint": "POST /api/payments/payu-success",
+        "issue": "No signature/hash validation on the mock success endpoint (expected for mock). Any authenticated user can confirm their own pending txn. Flag for when real PayUmoney is wired."
+      }
+    ]
+  },
+  "frontend_issues": {"ui_bugs": [], "integration_issues": [], "design_issues": []},
+  "test_report_links": [
+    "/app/backend/tests/test_backend.py",
+    "/app/backend/tests/conftest.py",
+    "/app/test_reports/pytest/pytest_results.xml"
+  ],
+  "action_items": [
+    "Review the db.py index fix (partialFilterExpression on share_token) — verify acceptable on production Mongo. The legacy `share_token_1` index is auto-dropped on startup.",
+    "Consider not setting share_token:null on new resume docs (omit field until share is enabled) as a defence-in-depth alternative.",
+    "When wiring real PayUmoney, add hash/signature verification in /api/payments/payu-success."
+  ],
+  "critical_code_review_comments": [
+    "db.py: share_token sparse-unique index was broken — fixed.",
+    "routes/resumes.py create_resume stores share_token:None by default; consider leaving it unset.",
+    "routes/payments.py payu-success trusts client-provided txn_id only (OK for mock, TODO for prod).",
+    "auth_utils.PLAN_FEATURES works correctly; require_feature + require_roles enforced across routes as tested (free blocked from canApplyJobs/shareLink/cloudDraft, limits enforced on ATS checks and maxResumes).",
+    "Admin endpoints correctly gated — non-admin gets 403 verified.",
+    "Admin actions are logged to admin_logs (grant_plan, verify_job, feature_job all verified).",
+    "Excluding Mongo _id projection is consistent across routes (good)."
+  ],
+  "updated_files": [
+    "/app/backend/db.py (fixed share_token unique index: partialFilterExpression + drop legacy)",
+    "/app/backend/tests/test_backend.py (new, 36 pytest cases)",
+    "/app/backend/tests/conftest.py (new, shared fixtures)",
+    "/app/memory/test_credentials.md (documented admin + test user convention)"
+  ],
+  "success_rate": {"backend": "100% (36/36)", "frontend": "N/A (backend-only run)"},
+  "test_credentials": "admin@resumepro.in / Admin@ResumePro2026 (seeded). Test users registered dynamically with Test@1234 password, TEST_ prefix.",
+  "seed_data_creation": "Seed users/resumes/jobs/applications created during tests use TEST_ prefix. Cleanup fixture removes them via admin delete endpoints at session end.",
+  "retest_needed": false,
+  "main_agent_can_self_test": true,
+  "context_for_next_testing_agent": "Backend is fully green after the MongoDB index fix. Full pytest suite at /app/backend/tests/test_backend.py (36 tests). Run: `cd /app/backend && python -m pytest tests/test_backend.py -v`. Admin grant-plan is how we upgrade users to jobseeker_pro in tests (no need to always go through mock payment). If /api/resumes returns 500 again, check backend logs for DuplicateKeyError on share_token — the index migration runs on backend startup.",
+  "rca of the issue": "RCA: resumes collection had legacy unique+sparse index on share_token. MongoDB's `sparse` option only skips documents where the indexed field is MISSING, not where the value is null. The resume creation code explicitly sets share_token=None. So once ANY resume was inserted, every subsequent resume insert (any user, any resume) raised E11000 DuplicateKeyError on share_token:null. Reproduction: register user → POST /api/resumes twice → 2nd returns 500. Mitigation applied: replaced the index with partialFilterExpression {share_token: {$type: 'string'}} so only real share-tokens are enforced unique; legacy `share_token_1` index is dropped on startup. Verified with pytest: 36/36 pass."
+}

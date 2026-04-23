@@ -1,0 +1,56 @@
+{
+  "summary": "Backend-only regression + new-feature testing for ResumePro ATS iteration 2. Wrote 14 new pytest cases covering POST /api/resumes/parse-upload (PDF + DOCX), POST /api/ats/self-check, GET /api/resumes/{id}/export/txt, and GET /api/settings/public. Re-ran the full iteration-1 suite (36 tests). 50/50 pass (100%). No backend bugs found in the new endpoints.",
+  "backend_issues": {
+    "critical": [],
+    "minor": [
+      {
+        "endpoint": "POST /api/resumes/parse-upload",
+        "issue": "Parser returns confidence based purely on field presence (no penalty for poor extraction). For very short / single-line PDFs the parser may still extract email+phone and report confidence 35-50; consider a minimum-text-length check before scoring."
+      },
+      {
+        "endpoint": "POST /api/resumes/parse-upload",
+        "issue": "8 MB size cap is enforced AFTER reading the entire body into memory (file.read()). For abuse protection, prefer FastAPI's Content-Length / streaming check, or set a Starlette max_request_size."
+      },
+      {
+        "endpoint": "POST /api/ats/self-check",
+        "issue": "The 'level' threshold uses score>75 for green and score>=50 for yellow. A resume scoring exactly 75 lands in 'yellow' which is fine but consider documenting the cut-offs in the API/README."
+      },
+      {
+        "endpoint": "GET /api/resumes/{id}/export/txt",
+        "issue": "TXT export does not increment downloads_used or check plan download caps (PDF export does). Likely intentional since TXT is meant to be free/always-available, but flag for product alignment."
+      }
+    ]
+  },
+  "frontend_issues": {"ui_bugs": [], "integration_issues": [], "design_issues": []},
+  "test_report_links": [
+    "/app/backend/tests/test_new_features.py",
+    "/app/backend/tests/test_backend.py",
+    "/app/backend/tests/conftest.py",
+    "/app/test_reports/pytest/pytest_results.xml",
+    "/app/test_reports/pytest/new_features.xml"
+  ],
+  "action_items": [
+    "(Optional) Add streaming/Content-Length 8MB pre-check to parse-upload to avoid loading huge files into memory before rejecting.",
+    "(Optional) Document self-check level thresholds (>75 green, >=50 yellow, else red) in API docs/README.",
+    "(Optional) Decide whether TXT export should count toward downloads_used like PDF export."
+  ],
+  "critical_code_review_comments": [
+    "engine/self_check.py — clean and well-structured. 8 rules sum to 100. Partial credit (warn states) implemented correctly. Action-verb detection is case-insensitive and tolerant.",
+    "services/resume_parser.py — pdfplumber + python-docx are good choices. Section detection is heuristic-based but works well on standard resumes. Falls back to fuzzy matching from COMMON_SKILLS for resilience.",
+    "routes/resumes.py parse_upload — properly validates extension, size, wraps parser exceptions as 400. Auth is enforced via Depends(get_current_user).",
+    "routes/resumes.py export/txt — correctly returns PlainTextResponse with Content-Disposition header. Mongo _id excluded.",
+    "routes/ats.py self_check_resume — returns 404 for missing resumes, no plan gating which seems intentional (this is a free ATS rule check).",
+    "All endpoints continue to exclude Mongo _id (good).",
+    "Iteration-1 share_token index fix in db.py still holds — no DuplicateKeyError observed across 50 tests."
+  ],
+  "updated_files": [
+    "/app/backend/tests/test_new_features.py (NEW — 14 tests for parse-upload, self-check, export/txt, settings/public)"
+  ],
+  "success_rate": {"backend": "100% (50/50 — 36 regression + 14 new)", "frontend": "N/A (backend-only run)"},
+  "test_credentials": "admin@resumepro.in / Admin@ResumePro2026 (seeded). Seekers/employers registered dynamically with TEST_ prefix and Test@1234 password.",
+  "seed_data_creation": "Tests create TEST_-prefixed users/resumes/jobs/applications. Cleanup fixture from test_backend.py purges them via admin endpoints at session end.",
+  "retest_needed": false,
+  "main_agent_can_self_test": true,
+  "context_for_next_testing_agent": "Full backend suite is at /app/backend/tests/. Run: `cd /app/backend && python -m pytest tests/ -v`. test_backend.py = iteration-1 regression (36), test_new_features.py = iteration-2 new endpoints (14). Sample PDF/DOCX are generated in-memory using reportlab + python-docx. For self-check, use a pro_seeker fixture to bypass the free-plan 1-resume cap when creating multiple test resumes. parse-upload returns 400 for both wrong extensions AND corrupt/empty pdfs (no 500s).",
+  "rca of the issue": "No bugs found in new features."
+}
