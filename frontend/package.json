@@ -64,7 +64,7 @@
     "zustand": "^5.0.12"
   },
   "scripts": {
-    "start": "craco start",
+   "start": "react-scripts start",
   "build": "react-scripts build",
     "test": "craco test"
   },
