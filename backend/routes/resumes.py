@@ -199,9 +199,7 @@ async def get_public_resume(share_token: str):
 
 @router.post("/{resume_id}/draft")
 async def save_draft(resume_id: str, payload: Dict[str, Any], user=Depends(get_current_user)):
-    plan_features = PLAN_FEATURES.get(user["plan"], PLAN_FEATURES["free"])
-    if not plan_features.get("cloudDraft"):
-        raise HTTPException(403, {"error": "upgrade_required", "feature": "cloudDraft"})
+  
     await resume_drafts.update_one(
         {"user_id": user["id"], "resume_id": resume_id},
         {"$set": {
