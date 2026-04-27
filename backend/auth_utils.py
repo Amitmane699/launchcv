@@ -76,8 +76,8 @@ def require_roles(*roles):
 # Plan feature map
 PLAN_FEATURES = {
     "free": {
-        "maxResumes": 1, "atsChecksPerMonth": 3, "maxDownloads": 1,
-        "canApplyJobs": False, "jobAlerts": False, "cloudDraft": False,
+        "maxResumes": 1, "atsChecksPerMonth": 3, "maxDownloads": 3,
+        "canApplyJobs": False, "jobAlerts": False, "cloudDraft": True,
         "shareLink": False, "allTemplates": False, "applicationTracker": True,
         "docxExport": False, "coverLetter": False, "multiJdCompare": False,
     },
